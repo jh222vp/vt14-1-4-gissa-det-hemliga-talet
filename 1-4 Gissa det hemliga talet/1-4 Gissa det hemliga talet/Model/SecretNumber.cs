@@ -11,10 +11,10 @@ namespace _1_4_Gissa_det_hemliga_talet.Model
 
     public class SecretNumber
     {
-        int _number;
+        private int _number;
         private List<int> _preveiousGuesses;
         const int MaxNumberOfGuesses = 7;
-        private string p;
+       
 
         public bool CanMakeGuess {
 
@@ -49,13 +49,39 @@ namespace _1_4_Gissa_det_hemliga_talet.Model
             }
         }
 
-        public Outcome Outcome { get; set; }
-        public IEnumerable<int> PreviousGuesses { get; set; }
+
+
+        public Outcome Outcome
+        {
+            get
+            {
+                return Outcome;
+            }
+            set
+            {
+                Outcome = value;
+            }
+        }
+        
+        //Undvika privacy leak. Därför kör vi AsReadOnly så det inte ska gå att manipulera
+        public IEnumerable<int> PreviousGuesses
+        {
+            get
+            {
+                return _preveiousGuesses.AsReadOnly();
+            }
+        }
+
+
 
         public void Initialize()
         {
             Random random = new Random();
             _number = random.Next(1, 101);
+
+            _preveiousGuesses.Clear();
+            Outcome = Outcome.Indefinite;
+            
         }
         public Outcome MakeGuess(int guess)
         {
@@ -67,15 +93,15 @@ namespace _1_4_Gissa_det_hemliga_talet.Model
             {
                 throw new ApplicationException();
             }
-            else if (guess == _number)
+            else if (guess == Number)
             {
                 return Outcome.Correct;
             }
-            else if (guess > _number)
+            else if (guess > Number)
             {
                 return Outcome.High;
             }
-            else if (guess < _number)
+            else if (guess < Number)
             {
                 return Outcome.Low;
             }
