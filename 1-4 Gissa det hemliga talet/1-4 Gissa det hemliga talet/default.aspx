@@ -14,7 +14,8 @@
         <asp:Label ID="Label1" runat="server" Text="Ange ett tal mellan 1 - 100"></asp:Label>
         <asp:TextBox ID="Input" runat="server"></asp:TextBox>
         <asp:Button ID="SendGuess" runat="server" Text="Send" OnClick="SendGuess_Click" />
-
+        <asp:Label ID="Label2" runat="server" Text=""></asp:Label>
+        <asp:Label ID="Label3" runat="server" Text=""></asp:Label>
     </div>
         <div>
             <asp:PlaceHolder ID="PlaceHolder1" Visible="false" runat="server"></asp:PlaceHolder>

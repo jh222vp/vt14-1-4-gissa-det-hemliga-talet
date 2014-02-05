@@ -20,13 +20,13 @@ namespace _1_4_Gissa_det_hemliga_talet.Model
 
             get
             {
-                if (_preveiousGuesses.Count == MaxNumberOfGuesses)
+                if (Count == MaxNumberOfGuesses)
                 {
                     Outcome = Outcome.NoMoreGuesses;
 
-                    return false;
+                    return true;
                 }
-                return true;
+                return false;
             }
         }
         public int Count
@@ -53,14 +53,8 @@ namespace _1_4_Gissa_det_hemliga_talet.Model
 
         public Outcome Outcome
         {
-            get
-            {
-                return Outcome;
-            }
-            set
-            {
-                Outcome = value;
-            }
+            get;
+           private set;
         }
         
         //Undvika privacy leak. Därför kör vi AsReadOnly så det inte ska gå att manipulera
@@ -76,11 +70,12 @@ namespace _1_4_Gissa_det_hemliga_talet.Model
 
         public void Initialize()
         {
+            _preveiousGuesses.Clear();
+            Outcome = Outcome.Indefinite;
+
             Random random = new Random();
             _number = random.Next(1, 101);
 
-            _preveiousGuesses.Clear();
-            Outcome = Outcome.Indefinite;
             
         }
         public Outcome MakeGuess(int guess)
