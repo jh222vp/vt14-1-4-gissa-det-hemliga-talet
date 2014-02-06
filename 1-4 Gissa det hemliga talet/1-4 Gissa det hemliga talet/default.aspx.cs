@@ -11,48 +11,71 @@ namespace _1_4_Gissa_det_hemliga_talet
     public partial class _default : System.Web.UI.Page
     {
         public SecretNumber secretNumber { 
+
             get
             {
-                return Session["SecretNumber"] as SecretNumber;
+                if (Session["secretNumber"] == null)
+                {
+                    Session["secretNumber"] = new SecretNumber();
+                }
+                return Session["secretNumber"] as SecretNumber;
             }
             set
             {
-                Session["SecretNumber"] = value;
+                Session["secretNumber"] = value;
             }
             }
+
         protected void Page_Load(object sender, EventArgs e)
         {
 
         }
+        protected void Restart_Click(object sender, EventArgs e)
+        {
+            //secretNumber.Initialize();
+        }
         protected void SendGuess_Click(object sender, EventArgs e)
         {
-            var sec = new SecretNumber();
-            int input = int.Parse(Input.Text);
+            
+            var input = int.Parse(Input.Text);
 
-            sec.MakeGuess(input);
-
-            switch (sec.MakeGuess(input))
+            switch (secretNumber.MakeGuess(input))
             {
                 case Outcome.Indefinite:
                     break;
                 case Outcome.Low:
-                    Label2.Text = "lågt";
-                    Label3.Text = sec.Number.ToString();
+                    AmountOfGuesslabel.Text = String.Format("Du har gissat {0} gånger!", secretNumber.Count.ToString());
+                    GuessLabel.Text = secretNumber.Number.ToString();
+                    HighOrLowLabel.Text = "Gissningen var för låg!";
                     break;
                 case Outcome.High:
-                    Label2.Text = "Högt";
+                    AmountOfGuesslabel.Text = String.Format("Du har gissat {0} gånger!", secretNumber.Count.ToString());
+                    GuessLabel.Text = secretNumber.Number.ToString();
+                    HighOrLowLabel.Text = "Gissningen var för hög!";
                     break;
                 case Outcome.Correct:
-                    Label2.Text = "RÄTT!!!";
+                    AmountOfGuesslabel.Text = String.Format("Rätt gissat!, Talet var mycket riktigt {0}", secretNumber.Number);
+                    SendGuess.Enabled = false;
+                    sendHolder.Visible = false;
+                    myPlaceHolder.Visible = true;
+                    secretNumber.Initialize();
+                    
                     break;
                 case Outcome.NoMoreGuesses:
-                    Label2.Text = "Slut på gissningar!";
+                    SendGuess.Enabled = false;
+                    AmountOfGuesslabel.Text = String.Format("Slut på gissningar! Talet var: {0}", secretNumber.Number);
+                    sendHolder.Visible = false;
+                    myPlaceHolder.Visible = true;
+                    secretNumber.Initialize();
+                    
                     break;
                 case Outcome.PreveiousGuess:
+                    AmountOfGuesslabel.Text = String.Format("Du har redan gissat på: {0}", input);
                     break;
                 default:
                     break;
             }
+            GuessLabel.Text = String.Join(", ", secretNumber.PreviousGuesses);
         }
     }
 }

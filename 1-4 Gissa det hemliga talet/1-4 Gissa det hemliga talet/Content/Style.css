@@ -1,0 +1,21 @@
+﻿body {
+    background-color:lightblue;
+    font-style:italic;
+}
+
+#HighOrLowLabel {
+
+margin-left:20%;
+margin-top:-25%;
+font-size:80px;
+color:orange;
+text-shadow: 1px 1px 1px #000;
+}
+
+#AmountOfGuesslabel {
+margin-top:700px;
+}
+
+#GuessLabel {
+    margin-top:50%;
+}

@@ -49,8 +49,6 @@ namespace _1_4_Gissa_det_hemliga_talet.Model
             }
         }
 
-
-
         public Outcome Outcome
         {
             get;
@@ -66,8 +64,6 @@ namespace _1_4_Gissa_det_hemliga_talet.Model
             }
         }
 
-
-
         public void Initialize()
         {
             _preveiousGuesses.Clear();
@@ -75,33 +71,35 @@ namespace _1_4_Gissa_det_hemliga_talet.Model
 
             Random random = new Random();
             _number = random.Next(1, 101);
-
-            
         }
         public Outcome MakeGuess(int guess)
         {
+            if (PreviousGuesses.Contains(guess))
+            {
+                return Outcome.PreveiousGuess;
+            }
             if (guess < 1 || guess > 100)
             {
                 throw new ArgumentOutOfRangeException();
             }
-            else if (Count > MaxNumberOfGuesses)
+            else if (Count +1 >= MaxNumberOfGuesses)
             {
-                throw new ApplicationException();
-            }
-            else if (guess == Number)
-            {
-                return Outcome.Correct;
+                
+                return Outcome.NoMoreGuesses;
             }
             else if (guess > Number)
             {
+                _preveiousGuesses.Add(guess);
                 return Outcome.High;
             }
             else if (guess < Number)
             {
+                _preveiousGuesses.Add(guess);
                 return Outcome.Low;
             }
             else
             {
+                _preveiousGuesses.Add(guess);
                 return Outcome.Correct;
             }
         }
